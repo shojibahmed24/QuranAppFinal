@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noor-al-Islam | Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Hind Siliguri', sans-serif; background-color: #f8fafc; }
+        .sidebar-active { background: #065f46; color: white; border-radius: 12px; }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+    <aside class="w-72 bg-white border-r border-slate-200 flex flex-col">
+        <div class="p-6 flex items-center gap-3 border-b border-slate-100">
+            <div class="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center text-white shadow-lg">
+                <i class="fas fa-star-and-crescent text-xl"></i>
+            </div>
+            <div>
+                <h1 class="font-bold text-slate-800 leading-none">অ্যাডমিন প্যানেল</h1>
+                <p class="text-[10px] text-slate-400 mt-1 uppercase tracking-wider">Noor-al-Islam</p>
+            </div>
+        </div>
+        <nav class="flex-1 p-4 space-y-2">
+            <button onclick="showTab('reminders')" id="tab-reminders" class="w-full flex items-center gap-3 p-3.5 text-slate-600 hover:bg-slate-50 transition-all sidebar-active">
+                <i class="fas fa-bell w-5"></i> <span class="font-semibold">আজকের বার্তা</span>
+            </button>
+            <button onclick="showTab('donors')" id="tab-donors" class="w-full flex items-center gap-3 p-3.5 text-slate-600 hover:bg-slate-50 transition-all">
+                <i class="fas fa-heartbeat w-5"></i> <span class="font-semibold">রক্তদাতা ব্যবস্থাপনা</span>
+            </button>
+            <button onclick="showTab('users')" id="tab-users" class="w-full flex items-center gap-3 p-3.5 text-slate-600 hover:bg-slate-50 transition-all">
+                <i class="fas fa-users w-5"></i> <span class="font-semibold">ব্যবহারকারী তালিকা</span>
+            </button>
+        </nav>
+        <div class="p-4 border-t border-slate-100">
+            <button onclick="handleLogout()" class="w-full flex items-center gap-3 p-3.5 text-red-500 hover:bg-red-50 rounded-xl transition-all">
+                <i class="fas fa-sign-out-alt"></i> <span class="font-bold">লগআউট</span>
+            </button>
+        </div>
+    </aside>
+    <main class="flex-1 flex flex-col min-w-0 bg-slate-50">
+        <header class="bg-white border-b border-slate-200 p-4 flex justify-between items-center">
+            <h2 id="tab-title" class="text-lg font-bold text-slate-800">আজকের বার্তা</h2>
+            <div class="flex items-center gap-3">
+                <div class="text-right">
+                    <p id="admin-info" class="text-sm font-bold text-slate-700">লোড হচ্ছে...</p>
+                    <p class="text-[10px] text-emerald-600 font-bold">সুপার অ্যাডমিন</p>
+                </div>
+                <div class="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center text-slate-500 border-2 border-white shadow-sm">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+            </div>
+        </header>
+        <div class="flex-1 overflow-y-auto p-8">
+            <div id="loading-state" class="flex flex-col items-center justify-center h-64">
+                <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-emerald-600"></div>
+            </div>
+            <div id="admin-content" class="hidden">
+                <section id="reminders-section" class="space-y-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                        <h3 class="font-bold text-slate-800 mb-4">নতুন বার্তা যোগ করুন</h3>
+                        <div class="flex gap-3">
+                            <input type="text" id="reminder-input" placeholder="বার্তার বিষয়বস্তু..." class="flex-1 p-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none text-slate-800">
+                            <button onclick="addReminder()" class="bg-emerald-600 text-white px-8 py-3.5 rounded-xl font-bold">যোগ করুন</button>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50 border-b border-slate-100">
+                                <tr>
+                                    <th class="p-4 text-xs font-bold text-slate-600 uppercase tracking-wider">বার্তা</th>
+                                    <th class="p-4 text-xs font-bold text-slate-600 uppercase tracking-wider">তারিখ</th>
+                                    <th class="p-4 text-xs font-bold text-slate-600 uppercase tracking-wider text-center">অ্যাকশন</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reminders-list"></tbody>
+                        </table>
+                    </div>
+                </section>
+                <section id="donors-section" class="hidden">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50 border-b border-slate-100">
+                                <tr>
+                                    <th class="p-4 text-xs font-bold text-slate-600 uppercase tracking-wider">নাম</th>
+                                    <th class="p-4 text-xs font-bold text-slate-600 uppercase tracking-wider">গ্রুপ</th>
+                                    <th class="p-4 text-xs font-bold text-slate-600 uppercase tracking-wider">ঠিকানা</th>
+                                    <th class="p-4 text-xs font-bold text-slate-600 uppercase tracking-wider text-center">অ্যাকশন</th>
+                                </tr>
+                            </thead>
+                            <tbody id="donors-list"></tbody>
+                        </table>
+                    </div>
+                </section>
+                <section id="users-section" class="hidden">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50 border-b border-slate-100">
+                                <tr>
+                                    <th class="p-4 text-xs font-bold text-slate-600 uppercase tracking-wider">নাম</th>
+                                    <th class="p-4 text-xs font-bold text-slate-600 uppercase tracking-wider">ইমেইল</th>
+                                    <th class="p-4 text-xs font-bold text-slate-600 uppercase tracking-wider">স্ট্যাটাস</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-list"></tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+    <script src="main.js"></script>
+</body>
+</html>
