@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Noor-al-Islam | নূর-আল-ইসলাম</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap');
+        :root { --primary: #064e3b; --primary-light: #059669; --secondary: #d97706; --accent: #f59e0b; }
+        html, body { height: 100dvh; margin: 0; padding: 0; overflow: hidden; }
+        body { font-family: 'Hind Siliguri', sans-serif; background-color: #f8fafc; color: #0f172a; display: flex; flex-direction: column; }
+        header { flex-shrink: 0; z-index: 50; }
+        main { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 1rem; scroll-behavior: smooth; }
+        nav { flex-shrink: 0; background: white; border-top: 1px solid #e2e8f0; padding: 0.75rem 1rem; display: flex; justify-content: space-around; z-index: 50; box-shadow: 0 -4px 15px rgba(0,0,0,0.05); }
+        .arabic-text { font-family: 'Amiri', serif; direction: rtl; line-height: 2.1; }
+        .glass-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); transition: all 0.3s ease; }
+        .active-ayah { border-left: 4px solid #10b981 !important; background-color: #f0fdf4 !important; }
+        .premium-gradient { background: linear-gradient(135deg, #064e3b 0%, #065f46 100%); }
+        .premium-card-bg { background: linear-gradient(165deg, #064e3b 0%, #022c22 100%); position: relative; overflow: hidden; }
+        .nav-active { color: var(--primary-light) !important; transform: translateY(-2px); }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 1000; }
+        .modal.active { display: flex; }
+        .floating-back-btn { position: sticky; top: 0; left: 0; z-index: 45; width: 42px; height: 42px; background: white; border: 1px solid #e2e8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #065f46; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 1rem; }
+        .compass-container { position: relative; width: 260px; height: 260px; margin: 0 auto; }
+        .compass-ring { position: absolute; inset: 0; border: 8px solid #e2e8f0; border-radius: 50%; }
+        .compass-dial { position: absolute; inset: 10px; transition: transform 0.1s ease-out; }
+        .qibla-dot { position: absolute; top: 50%; left: 50%; width: 12px; height: 12px; background: #cbd5e1; border-radius: 50%; transform: translate(-50%, -50%); transition: all 0.3s; }
+        .compass-aligned { background: #10b981 !important; box-shadow: 0 0 15px #10b981; transform: translate(-50%, -50%) scale(1.5); }
+        .floating-player-btn { position: fixed; bottom: 100px; right: 20px; z-index: 60; width: 50px; height: 50px; background: #064e3b; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 8px 20px rgba(6, 78, 59, 0.3); }
+        .progress-ring { position: absolute; top: -2px; left: -2px; width: 54px; height: 54px; pointer-events: none; }
+        .progress-ring circle { fill: transparent; stroke: #10b981; stroke-width: 3; stroke-dasharray: 157; stroke-dashoffset: 157; transition: stroke-dashoffset 0.3s; transform: rotate(-90deg); transform-origin: 50% 50%; }
+        .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1e293b; color: white; padding: 12px 24px; border-radius: 12px; font-size: 12px; font-weight: 600; z-index: 2000; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0; }
+        .toast.active { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .bottom-spacer { height: 20px; }
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+      html, body { height: 100%; margin: 0; padding: 0; background-color: #09090b !important; color: #f4f4f5; font-family: sans-serif; }
+      ::-webkit-scrollbar { display: none; }
+      
+    </style>
+    
+    <script>
+      
+    window.StudioDatabase = {
+      url: "https://cuxazxzpvrodsmxktkne.supabase.co",
+      key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN1eGF6eHpwdnJvZHNteGt0a25lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEyNTcxNzUsImV4cCI6MjA4NjgzMzE3NX0.8zGB_E_AAsU6wnBIBZnpQmDrmyKJXPLU11UChyZZKJ4"
+    };
+    console.log('Database Bridge: Active');
+  
+      // Mobile Error Monitor
+      window.onerror = function(message, source, lineno, colno, error) {
+        const errorMsg = 'SYSTEM_ERROR: ' + message + ' at ' + (source ? source.split('/').pop() : 'inline') + ':' + lineno;
+        console.error(errorMsg);
+        // Show visible error on mobile for debugging if it happens in the first 5 seconds
+        if (window.innerHeight < 1000) {
+           const div = document.createElement('div');
+           div.style = "position:fixed;bottom:0;left:0;right:0;background:rgba(220,38,38,0.9);color:white;padding:10px;font-size:10px;z-index:99999;font-family:monospace;word-break:break-all;";
+           div.innerText = errorMsg;
+           document.body.appendChild(div);
+           setTimeout(() => div.remove(), 8000);
+        }
+        window.parent.postMessage({
+          type: 'RUNTIME_ERROR',
+          error: { message, line: lineno, source: source ? source.split('/').pop() : 'index.html' }
+        }, '*');
+        return false;
+      };
+      if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+    </script>
+  
+  </head>
+<body>
+    <div id="toast" class="toast"></div>
+
+    <header class="premium-gradient text-white p-4 shadow-xl rounded-b-[25px] flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <div class="bg-white/20 p-2 rounded-xl"><i class="fas fa-star-and-crescent text-lg text-amber-300"></i></div>
+            <div><h1 class="text-sm font-bold leading-none">নূর-আল-ইসলাম</h1><p class="text-[9px] opacity-70">আপনার দ্বীনি সফরসঙ্গী</p></div>
+        </div>
+        <div id="user-profile">
+            <button onclick="openAuthModal()" id="login-btn" class="bg-white/10 px-3 py-1.5 rounded-xl text-[10px] font-bold border border-white/20">লগইন</button>
+            <div id="user-info" class="hidden flex items-center gap-2">
+                <div class="text-right">
+                    <p id="user-name" class="text-[10px] font-bold"></p>
+                    <div class="flex gap-2">
+                        <a href="../admin/index.html" id="admin-link" class="hidden text-[9px] text-amber-300 font-bold">অ্যাডমিন প্যানেল</a>
+                        <button onclick="handleLogout()" class="text-[9px] text-red-300">লগআউট</button>
+                    </div>
+                </div>
+                <div class="w-7 h-7 bg-emerald-500 rounded-full flex items-center justify-center border-2 border-white/30"><i class="fas fa-user text-[10px]"></i></div>
+            </div>
+        </div>
+    </header>
+
+    <main id="app-content" class="max-w-md mx-auto">
+        <section id="home-section" class="space-y-5">
+            <div id="daily-reminder-container" class="hidden bg-amber-50 border border-amber-200 p-4 rounded-2xl flex items-start gap-3 shadow-sm">
+                <div class="w-8 h-8 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center flex-shrink-0"><i class="fas fa-bell text-xs"></i></div>
+                <div><p class="text-[10px] font-bold text-amber-800 uppercase tracking-wider mb-0.5">আজকের বার্তা</p><p id="reminder-text" class="text-xs text-amber-900 leading-relaxed font-medium"></p></div>
+            </div>
+
+            <div class="premium-card-bg p-6 rounded-[2rem] text-white shadow-2xl">
+                <div class="flex justify-between items-center mb-6">
+                    <div class="flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-full backdrop-blur-md border border-white/10">
+                        <i class="fas fa-calendar-day text-amber-400 text-[10px]"></i><span id="ramadan-date" class="text-[9px] font-bold">...</span>
+                    </div>
+                    <div class="flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-full backdrop-blur-md border border-white/10">
+                        <i class="fas fa-location-dot text-amber-400 text-[10px]"></i><span class="text-[9px] font-bold">ঢাকা</span>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center mb-6">
+                    <div class="text-center mb-3">
+                        <p id="next-meal-label" class="text-[10px] font-medium text-emerald-200 uppercase tracking-widest mb-1">ইফতারের বাকি</p>
+                        <h2 id="meal-countdown" class="text-4xl font-black tracking-tighter">00:00:00</h2>
+                    </div>
+                    <div class="w-full max-w-[160px] bg-white/10 h-1.5 rounded-full overflow-hidden">
+                        <div id="fasting-progress" class="h-full bg-gradient-to-r from-amber-400 to-yellow-200 transition-all duration-1000" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-white/5 backdrop-blur-xl p-4 rounded-[1.5rem] border border-white/10 flex flex-col items-center">
+                        <p class="text-[9px] uppercase opacity-60 mb-1">সেহরির শেষ</p><p id="sehri-time" class="text-lg font-bold">--:--</p>
+                    </div>
+                    <div class="bg-white/5 backdrop-blur-xl p-4 rounded-[1.5rem] border border-white/10 flex flex-col items-center">
+                        <p class="text-[9px] uppercase opacity-60 mb-1">ইফতারের সময়</p><p id="iftar-time" class="text-lg font-bold">--:--</p>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-4">
+                <div class="glass-card p-6 border-t-4 border-emerald-600">
+                    <h5 class="font-bold text-emerald-800 text-sm mb-3">সেহরির দোয়া</h5>
+                    <p class="arabic-text text-xl text-right mb-3 text-slate-900 font-bold">نَوَيْتُ أَنْ أَصُومَ غَدًا مِّنْ شَهْرِ رَمَضَانَ الْمُبَارَكِ فَرْضًا لَّكَ يَا اللهُ فَتَقَبَّلْ مِنِّي إِنَّكَ أَنْتَ السَّمِيعُ الْعَلِيمُ</p>
+                    <p class="text-[13px] text-slate-700 leading-relaxed">হে আল্লাহ! আগামীকাল পবিত্র রমজান মাসে তোমার পক্ষ থেকে নির্ধারিত ফরজ রোজা রাখার নিয়ত করলাম। অতএব তুমি আমার পক্ষ থেকে তা কবুল কর, নিশ্চয়ই তুমি সর্বশ্রোতা ও সর্বজ্ঞ।</p>
+                </div>
+                <div class="glass-card p-6 border-t-4 border-amber-600">
+                    <h5 class="font-bold text-amber-800 text-sm mb-3">ইফতারের দোয়া</h5>
+                    <p class="arabic-text text-xl text-right mb-3 text-slate-900 font-bold">اَللَّهُمَّ لَكَ صُمْتُ وَعَلَى رِزْقِكَ اَفْطَرْتُ</p>
+                    <p class="text-[13px] text-slate-700 leading-relaxed">হে আল্লাহ! আমি তোমারই সন্তুষ্টির জন্য রোজা রেখেছি এবং তোমারই দেয়া রিযিক দিয়ে ইফতার করছি।</p>
+                </div>
+            </div>
+            <div class="bottom-spacer"></div>
+        </section>
+
+        <section id="quran-section" class="hidden space-y-4">
+            <div id="quran-search-container" class="sticky top-0 z-40 bg-slate-50/80 backdrop-blur-md py-2">
+                <input type="text" id="quran-search" oninput="filterSurahs()" placeholder="সূরা খুঁজুন..." class="w-full px-5 py-3.5 rounded-2xl border border-slate-300 shadow-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-white text-sm text-slate-900 placeholder-slate-500">
+            </div>
+            <div id="surah-list" class="grid gap-3"></div>
+            <div id="ayah-view" class="hidden space-y-4">
+                <button onclick="backToSurahList()" class="floating-back-btn"><i class="fas fa-arrow-left"></i></button>
+                <div id="ayah-container" class="space-y-4"></div>
+            </div>
+            <div class="bottom-spacer"></div>
+        </section>
+
+        <section id="qibla-section" class="hidden flex flex-col items-center py-6 space-y-6">
+            <div class="text-center"><h2 class="text-xl font-bold text-emerald-900">কিবলা কম্পাস</h2><p class="text-[11px] text-slate-500 mt-1">সঠিক দিক পেতে ফোনটি সমতলে রাখুন</p></div>
+            <div class="compass-container">
+                <div class="compass-ring"></div>
+                <div id="compass-dial" class="compass-dial">
+                    <svg viewBox="0 0 200 200" class="w-full h-full">
+                        <circle cx="100" cy="100" r="90" fill="white" stroke="#f1f5f9" stroke-width="2" />
+                        <g id="qibla-pointer-group"><circle cx="100" cy="25" r="12" fill="#d97706" /><text x="100" y="29" text-anchor="middle" font-size="8" fill="white" font-weight="bold">🕋</text></g>
+                        <path d="M100 40 L105 100 L100 110 L95 100 Z" fill="#ef4444" /><path d="M100 160 L95 100 L100 90 L105 100 Z" fill="#1e293b" /><circle cx="100" cy="100" r="5" fill="#475569" />
+                    </svg>
+                </div>
+                <div class="qibla-dot"></div>
+            </div>
+            <button id="qibla-permission-btn" onclick="requestQiblaPermission()" class="hidden bg-emerald-600 text-white px-6 py-2.5 rounded-xl text-xs font-bold shadow-lg">কম্পাস চালু করুন</button>
+            <div id="qibla-status" class="px-4 py-1.5 rounded-full bg-slate-100 text-[10px] font-bold text-slate-500 uppercase tracking-wider">কিবলার দিকে ঘুরুন</div>
+            <div class="bg-white shadow-lg border border-slate-100 px-8 py-4 rounded-[2rem] flex items-baseline gap-2"><span class="text-3xl font-black text-emerald-900" id="qibla-degree">--°</span><span class="text-xs font-bold text-slate-400 uppercase">Qibla</span></div>
+            <div class="bottom-spacer"></div>
+        </section>
+
+        <section id="tracker-section" class="hidden space-y-4">
+            <h2 class="text-xl font-bold text-emerald-900">নামাজ ট্র্যাকার</h2>
+            <div id="monthly-stats-card" class="premium-card-bg p-5 rounded-[1.5rem] text-white shadow-lg hidden">
+                <div class="grid grid-cols-2 gap-4">
+                    <div><p class="text-2xl font-black" id="total-missed-count">0</p><p class="text-[9px] opacity-80">মোট মিস হওয়া নামাজ</p></div>
+                    <div class="border-l border-white/10 pl-4"><p class="text-lg font-bold text-amber-400" id="most-missed-prayer">--</p><p class="text-[9px] opacity-80">বেশি মিস হওয়া ওয়াক্ত</p></div>
+                </div>
+            </div>
+            <div id="tracker-list" class="space-y-3"></div>
+            <div class="bottom-spacer"></div>
+        </section>
+
+        <section id="blood-section" class="hidden space-y-4">
+            <div class="flex justify-between items-center"><h2 class="text-xl font-bold text-emerald-900">রক্তদাতা</h2><button onclick="openDonorModal()" class="bg-red-500 text-white px-5 py-2.5 rounded-xl text-[11px] font-bold">দাতা হন</button></div>
+            <select id="blood-filter" onchange="loadDonors()" class="w-full p-3.5 rounded-xl bg-white font-bold outline-none border border-slate-300 shadow-sm text-sm text-slate-900">
+                <option value="">সব গ্রুপ</option><option value="A+">A+</option><option value="A-">A-</option><option value="B+">B+</option><option value="B-">B-</option><option value="O+">O+</option><option value="O-">O-</option><option value="AB+">AB+</option><option value="AB-">AB-</option>
+            </select>
+            <div id="donor-list" class="space-y-3"></div>
+            <div class="bottom-spacer"></div>
+        </section>
+    </main>
+
+    <div id="global-audio-player" class="hidden">
+        <button onclick="toggleAudio()" class="floating-player-btn"><svg class="progress-ring"><circle id="audio-progress-circle" cx="27" cy="27" r="25"></circle></svg><i class="fas fa-pause text-sm" id="main-play-pause"></i></button>
+    </div>
+
+    <nav>
+        <button onclick="showSection('home')" class="nav-btn nav-active flex flex-col items-center text-slate-400" id="nav-home"><i class="fas fa-home text-lg"></i><span class="text-[9px] mt-1 font-bold">হোম</span></button>
+        <button onclick="showSection('quran')" class="nav-btn flex flex-col items-center text-slate-400" id="nav-quran"><i class="fas fa-book-open text-lg"></i><span class="text-[9px] mt-1 font-bold">কুরআন</span></button>
+        <button onclick="showSection('qibla')" class="nav-btn flex flex-col items-center text-slate-400" id="nav-qibla"><i class="fas fa-compass text-lg"></i><span class="text-[9px] mt-1 font-bold">কিবলা</span></button>
+        <button onclick="showSection('tracker')" class="nav-btn flex flex-col items-center text-slate-400" id="nav-tracker"><i class="fas fa-check-circle text-lg"></i><span class="text-[9px] mt-1 font-bold">আমল</span></button>
+        <button onclick="showSection('blood')" class="nav-btn flex flex-col items-center text-slate-400" id="nav-blood"><i class="fas fa-heart text-lg"></i><span class="text-[9px] mt-1 font-bold">রক্ত</span></button>
+    </nav>
+
+    <div id="auth-modal" class="modal items-center justify-center p-6">
+        <div class="bg-white p-7 rounded-[2rem] w-full max-w-xs shadow-2xl">
+            <div class="flex justify-between mb-6">
+                <button onclick="toggleAuthMode('login')" id="auth-tab-login" class="text-sm font-bold text-emerald-800 border-b-2 border-emerald-800 pb-1">লগইন</button>
+                <button onclick="toggleAuthMode('signup')" id="auth-tab-signup" class="text-sm font-bold text-slate-400 pb-1">রেজিস্ট্রেশন</button>
+            </div>
+            <div id="signup-fields" class="hidden mb-3">
+                <input type="text" id="auth-name" placeholder="আপনার নাম" class="w-full p-3.5 bg-slate-50 rounded-xl outline-none border border-slate-200 text-sm text-slate-900 placeholder-slate-500">
+            </div>
+            <input type="email" id="auth-email" placeholder="ইমেইল" class="w-full p-3.5 bg-slate-50 rounded-xl mb-3 outline-none border border-slate-200 text-sm text-slate-900 placeholder-slate-500">
+            <input type="password" id="auth-password" placeholder="পাসওয়ার্ড" class="w-full p-3.5 bg-slate-50 rounded-xl mb-5 outline-none border border-slate-200 text-sm text-slate-900 placeholder-slate-500">
+            <button onclick="handleAuth()" id="auth-submit-btn" class="w-full premium-gradient text-white p-3.5 rounded-xl font-bold shadow-lg">প্রবেশ করুন</button>
+            <button onclick="closeAuthModal()" class="w-full mt-4 text-slate-400 text-[11px] font-medium">বন্ধ করুন</button>
+        </div>
+    </div>
+
+    <div id="donor-modal" class="modal items-center justify-center p-6">
+        <div class="bg-white p-7 rounded-[2rem] w-full max-w-xs shadow-2xl">
+            <h3 class="text-lg font-bold mb-5 text-red-900">রক্তদাতা নিবন্ধন</h3>
+            <div class="space-y-3">
+                <input type="text" id="donor-name" placeholder="আপনার নাম" class="w-full p-3.5 bg-slate-50 rounded-xl outline-none border border-slate-200 text-sm text-slate-900 placeholder-slate-500">
+                <select id="donor-group" class="w-full p-3.5 bg-slate-50 rounded-xl outline-none border border-slate-200 text-sm text-slate-900">
+                    <option value="A+">A+</option><option value="A-">A-</option><option value="B+">B+</option><option value="B-">B-</option><option value="O+">O+</option><option value="O-">O-</option><option value="AB+">AB+</option><option value="AB-">AB-</option>
+                </select>
+                <input type="text" id="donor-location" placeholder="ঠিকানা (শহর)" class="w-full p-3.5 bg-slate-50 rounded-xl outline-none border border-slate-200 text-sm text-slate-900 placeholder-slate-500">
+                <input type="tel" id="donor-contact" placeholder="মোবাইল নম্বর" class="w-full p-3.5 bg-slate-50 rounded-xl outline-none border border-slate-200 text-sm text-slate-900 placeholder-slate-500">
+            </div>
+            <button onclick="registerDonor()" class="w-full bg-red-600 text-white p-3.5 rounded-xl font-bold mt-5 shadow-lg">নিবন্ধন করুন</button>
+            <button onclick="closeDonorModal()" class="w-full mt-4 text-slate-400 text-[11px] font-medium">বন্ধ করুন</button>
+        </div>
+    </div>
+
+    
+<script>
+// --- FILE: sw.js ---
+try {
+const CACHE_NAME = 'noor-v10';
+const ASSETS = [
+  '/',
+  '/app/index.html',
+  '/app/main.js',
+  '/admin/index.html',
+  '/admin/main.js',
+  'https://cdn.tailwindcss.com',
+  'https://unpkg.com/@supabase/supabase-js@2',
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
+];
+
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(ASSETS)));
+});
+
+self.addEventListener('fetch', e => {
+  e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+});
+} catch(e) { console.error("Error in sw.js:", e); }
+
+// --- FILE: main.js ---
+try {
+const SUPABASE_URL = 'https://cuxazxzpvrodsmxktkne.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN1eGF6eHpwdnJvZHNteGt0a25lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEyNTcxNzUsImV4cCI6MjA4NjgzMzE3NX0.8zGB_E_AAsU6wnBIBZnpQmDrmyKJXPLU11UChyZZKJ4';
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentUser = null;
+let userProfile = null;
+let authMode = 'login';
+let allSurahs = [];
+let userLocation = { lat: 23.8103, lng: 90.4125 };
+let ramadanTimings = { sehri: '', iftar: '' };
+let currentAudio = new Audio();
+let currentAyahList = [];
+let currentAyahIndex = -1;
+
+const safeSetText = (id, text) => { const el = document.getElementById(id); if (el) el.innerText = text; };
+const safeSetStyle = (id, prop, val) => { const el = document.getElementById(id); if (el) el.style[prop] = val; };
+
+function showToast(msg) {
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+    toast.innerText = msg;
+    toast.classList.add('active');
+    setTimeout(() => toast.classList.remove('active'), 3000);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    checkUser();
+    initLocation();
+    loadSurahs();
+    loadDailyReminder();
+    setInterval(updateMealCountdown, 1000);
+    initQibla();
+
+    currentAudio.ontimeupdate = () => {
+        if (currentAudio.duration) {
+            const progress = (currentAudio.currentTime / currentAudio.duration);
+            const circle = document.getElementById('audio-progress-circle');
+            if (circle) circle.style.strokeDashoffset = 157 - (progress * 157);
+        }
+    };
+    currentAudio.onended = () => playNextAyah();
+});
+
+async function checkUser() {
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    if (user) {
+        currentUser = user;
+        const { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
+        if (profile) {
+            userProfile = profile;
+            document.getElementById('login-btn')?.classList.add('hidden');
+            document.getElementById('user-info')?.classList.remove('hidden');
+            safeSetText('user-name', userProfile.full_name || user.email.split('@')[0]);
+            
+            // Show Admin Link if user is admin
+            if (userProfile.is_admin) {
+                document.getElementById('admin-link')?.classList.remove('hidden');
+            }
+            
+            initTracker();
+        }
+    } else {
+        document.getElementById('login-btn')?.classList.remove('hidden');
+        document.getElementById('user-info')?.classList.add('hidden');
+        document.getElementById('admin-link')?.classList.add('hidden');
+    }
+}
+
+async function loadDailyReminder() {
+    try {
+        const { data } = await supabaseClient.from('daily_reminders').select('*').eq('is_active', true).order('created_at', { ascending: false }).limit(1).single();
+        if (data) {
+            const container = document.getElementById('daily-reminder-container');
+            if (container) {
+                container.classList.remove('hidden');
+                safeSetText('reminder-text', data.content);
+            }
+        }
+    } catch (e) {}
+}
+
+window.handleLogout = async () => {
+    await supabaseClient.auth.signOut();
+    showToast('লগআউট সফল হয়েছে');
+    setTimeout(() => location.reload(), 1000);
+};
+
+window.toggleAuthMode = (mode) => {
+    authMode = mode;
+    const signupFields = document.getElementById('signup-fields');
+    const submitBtn = document.getElementById('auth-submit-btn');
+    const loginTab = document.getElementById('auth-tab-login');
+    const signupTab = document.getElementById('auth-tab-signup');
+
+    if (mode === 'signup') {
+        signupFields?.classList.remove('hidden');
+        if (submitBtn) submitBtn.innerText = 'রেজিস্ট্রেশন করুন';
+        if (signupTab) signupTab.className = 'text-sm font-bold text-emerald-800 border-b-2 border-emerald-800 pb-1';
+        if (loginTab) loginTab.className = 'text-sm font-bold text-slate-400 pb-1';
+    } else {
+        signupFields?.classList.add('hidden');
+        if (submitBtn) submitBtn.innerText = 'প্রবেশ করুন';
+        if (loginTab) loginTab.className = 'text-sm font-bold text-emerald-800 border-b-2 border-emerald-800 pb-1';
+        if (signupTab) signupTab.className = 'text-sm font-bold text-slate-400 pb-1';
+    }
+};
+
+window.openAuthModal = () => document.getElementById('auth-modal')?.classList.add('active');
+window.closeAuthModal = () => document.getElementById('auth-modal')?.classList.remove('active');
+
+window.handleAuth = async () => {
+    const email = document.getElementById('auth-email')?.value;
+    const password = document.getElementById('auth-password')?.value;
+    const name = document.getElementById('auth-name')?.value;
+    const btn = document.getElementById('auth-submit-btn');
+
+    if (!email || !password) return showToast('সব তথ্য দিন');
+    
+    btn.disabled = true;
+    btn.innerText = 'অপেক্ষা করুন...';
+
+    try {
+        if (authMode === 'signup') {
+            if (!name) throw new Error('আপনার নাম দিন');
+            const { data, error } = await supabaseClient.auth.signUp({ email, password });
+            if (error) throw error;
+            if (data.user) {
+                await supabaseClient.from('profiles').update({ full_name: name }).eq('id', data.user.id);
+                showToast('রেজিস্ট্রেশন সফল!');
+                location.reload();
+            }
+        } else {
+            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            if (error) throw error;
+            showToast('লগইন সফল!');
+            location.reload();
+        }
+    } catch (e) {
+        showToast(e.message);
+        btn.disabled = false;
+        btn.innerText = authMode === 'signup' ? 'রেজিস্ট্রেশন করুন' : 'প্রবেশ করুন';
+    }
+};
+
+window.showSection = function(sectionId) {
+    document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
+    document.getElementById(`${sectionId}-section`)?.classList.remove('hidden');
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-active'));
+    document.getElementById(`nav-${sectionId}`)?.classList.add('nav-active');
+    if (sectionId === 'blood') loadDonors();
+    if (sectionId === 'tracker') initTracker();
+    document.querySelector('main').scrollTop = 0;
+};
+
+async function initLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+            userLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+            fetchPrayerTimes();
+            initQibla();
+        }, () => fetchPrayerTimes());
+    } else fetchPrayerTimes();
+}
+
+async function fetchPrayerTimes() {
+    try {
+        const date = new Date().toISOString().split('T')[0];
+        const res = await fetch(`https://api.aladhan.com/v1/timings/${date}?latitude=${userLocation.lat}&longitude=${userLocation.lng}&method=2`);
+        const data = await res.json();
+        const timings = data.data.timings;
+        ramadanTimings.sehri = timings.Imsak;
+        ramadanTimings.iftar = timings.Maghrib;
+        safeSetText('sehri-time', timings.Imsak);
+        safeSetText('iftar-time', timings.Maghrib);
+        safeSetText('ramadan-date', data.data.date.hijri.day + ' ' + data.data.date.hijri.month.en + ' ' + data.data.date.hijri.year);
+    } catch (e) { console.error(e); }
+}
+
+function updateMealCountdown() {
+    if (!ramadanTimings.sehri || !ramadanTimings.iftar) return;
+    const now = new Date();
+    const [sH, sM] = ramadanTimings.sehri.split(':');
+    const [iH, iM] = ramadanTimings.iftar.split(':');
+    const sehriTime = new Date(); sehriTime.setHours(sH, sM, 0);
+    const iftarTime = new Date(); iftarTime.setHours(iH, iM, 0);
+    let target, label, progress = 0;
+    if (now < sehriTime) { target = sehriTime; label = 'সেহরির বাকি'; }
+    else if (now < iftarTime) { target = iftarTime; label = 'ইফতারের বাকি'; progress = ((now - sehriTime) / (iftarTime - sehriTime)) * 100; }
+    else { target = new Date(sehriTime.getTime() + 24 * 60 * 60 * 1000); label = 'আগামী সেহরির বাকি'; }
+    const diff = target - now;
+    const hh = Math.floor(diff/3600000), mm = Math.floor((diff%3600000)/60000), ss = Math.floor((diff%60000)/1000);
+    
+    safeSetText('next-meal-label', label);
+    safeSetText('meal-countdown', `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`);
+    safeSetStyle('fasting-progress', 'width', `${progress}%`);
+}
+
+async function loadSurahs() {
+    const list = document.getElementById('surah-list');
+    if (list) list.innerHTML = '<div class="flex justify-center py-20"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600"></div></div>';
+    try {
+        const res = await fetch('https://api.alquran.cloud/v1/surah');
+        const data = await res.json();
+        allSurahs = data.data;
+        renderSurahs(allSurahs);
+    } catch (e) { 
+        if (list) list.innerHTML = '<p class="text-center text-slate-400 py-10">কুরআন লোড করা সম্ভব হয়নি।</p>';
+    }
+}
+
+function renderSurahs(surahs) {
+    const list = document.getElementById('surah-list');
+    if (!list) return;
+    list.innerHTML = surahs.map(s => `
+        <div onclick="loadAyahs(${s.number}, '${s.englishName}')" class="glass-card surah-card p-4 flex justify-between items-center cursor-pointer gap-3">
+            <div class="flex items-center gap-4 min-w-0">
+                <div class="w-10 h-10 flex-shrink-0 premium-gradient text-white rounded-xl flex items-center justify-center font-bold text-sm shadow-md">${s.number}</div>
+                <div class="truncate"><p class="font-bold text-slate-900 text-sm truncate">${s.englishName}</p><p class="text-[10px] text-emerald-600 font-bold uppercase">${s.numberOfAyahs} Ayahs</p></div>
+            </div>
+            <p class="arabic-text text-xl text-emerald-800 flex-shrink-0 font-bold">${s.name}</p>
+        </div>
+    `).join('');
+}
+
+window.filterSurahs = function() {
+    const q = document.getElementById('quran-search')?.value.toLowerCase() || '';
+    const filtered = allSurahs.filter(s => s.englishName.toLowerCase().includes(q) || s.name.includes(q));
+    renderSurahs(filtered);
+};
+
+window.loadAyahs = async function(num, name) {
+    document.getElementById('surah-list')?.classList.add('hidden');
+    document.getElementById('quran-search-container')?.classList.add('hidden');
+    document.getElementById('ayah-view')?.classList.remove('hidden');
+    const container = document.getElementById('ayah-container');
+    if (container) container.innerHTML = '<div class="flex justify-center py-20"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600"></div></div>';
+    try {
+        const res = await fetch(`https://api.alquran.cloud/v1/surah/${num}/editions/quran-uthmani,bn.bengali`);
+        const data = await res.json();
+        const uthmani = data.data[0].ayahs, bengali = data.data[1].ayahs;
+        currentAyahList = uthmani.map((a, i) => ({ number: a.number, surahName: name, index: i }));
+        if (container) container.innerHTML = uthmani.map((a, i) => `
+            <div id="ayah-card-${i}" class="ayah-card glass-card p-5 space-y-4 transition-all duration-300">
+                <div class="flex justify-between items-center"><span class="text-[10px] font-bold bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md">${num}:${i+1}</span><button onclick="playAyah(${i})" class="w-8 h-8 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center shadow-sm active:scale-90"><i class="fas fa-play text-[10px]"></i></button></div>
+                <p class="arabic-text text-xl text-right leading-[2.1] text-slate-900 font-bold">${a.text}</p>
+                <div class="border-t border-slate-50 pt-3"><p class="text-[13px] text-slate-600 leading-relaxed font-medium">${bengali[i].text}</p></div>
+            </div>
+        `).join('');
+        document.querySelector('main').scrollTop = 0;
+    } catch (e) { 
+        showToast('আয়াত লোড করা সম্ভব হয়নি');
+    }
+};
+
+window.backToSurahList = function() {
+    document.getElementById('surah-list')?.classList.remove('hidden');
+    document.getElementById('quran-search-container')?.classList.remove('hidden');
+    document.getElementById('ayah-view')?.classList.add('hidden');
+    document.getElementById('global-audio-player')?.classList.add('hidden');
+    currentAudio.pause();
+};
+
+window.playAyah = function(index) {
+    currentAyahIndex = index;
+    const ayah = currentAyahList[index];
+    document.querySelectorAll('.ayah-card').forEach(c => c.classList.remove('active-ayah'));
+    const activeCard = document.getElementById(`ayah-card-${index}`);
+    if (activeCard) { activeCard.classList.add('active-ayah'); activeCard.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    currentAudio.src = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${ayah.number}.mp3`;
+    currentAudio.play();
+    document.getElementById('global-audio-player')?.classList.remove('hidden');
+    const playBtn = document.getElementById('main-play-pause');
+    if (playBtn) playBtn.className = 'fas fa-pause text-sm';
+};
+
+window.toggleAudio = function() {
+    const playBtn = document.getElementById('main-play-pause');
+    if (currentAudio.paused) { currentAudio.play(); if (playBtn) playBtn.className = 'fas fa-pause text-sm'; } 
+    else { currentAudio.pause(); if (playBtn) playBtn.className = 'fas fa-play text-sm'; }
+};
+
+function playNextAyah() {
+    if (currentAyahIndex + 1 < currentAyahList.length) playAyah(currentAyahIndex + 1);
+}
+
+async function initTracker() {
+    const tasks = [{ id: 'Fajr', name: 'ফজর' }, { id: 'Dhuhr', name: 'যোহর' }, { id: 'Asr', name: 'আসর' }, { id: 'Maghrib', name: 'মাগরিব' }, { id: 'Isha', name: 'এশা' }];
+    let completedPrayers = [];
+    if (currentUser) {
+        const today = new Date().toISOString().split('T')[0];
+        const { data } = await supabaseClient.from('prayer_logs').select('prayer_name').eq('user_id', currentUser.id).eq('date', today);
+        if (data) completedPrayers = data.map(d => d.prayer_name);
+        updateMonthlyStats();
+        document.getElementById('monthly-stats-card')?.classList.remove('hidden');
+    }
+    const list = document.getElementById('tracker-list');
+    if (list) {
+        list.innerHTML = tasks.map(t => `
+            <div class="glass-card p-5 flex justify-between items-center ${completedPrayers.includes(t.id) ? 'bg-emerald-50/50' : ''}" onclick="handleTrackerClick('${t.id}', ${completedPrayers.includes(t.id)})">
+                <span class="font-bold text-slate-900 text-sm">${t.name} নামাজ</span>
+                <div class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${completedPrayers.includes(t.id) ? 'bg-emerald-600 border-emerald-600' : 'border-slate-200'}">
+                    ${completedPrayers.includes(t.id) ? '<i class="fas fa-check text-white text-[10px]"></i>' : ''}
+                </div>
+            </div>
+        `).join('');
+    }
+}
+
+window.handleTrackerClick = function(id, isChecked) {
+    if (!currentUser) { showToast('নামাজ ট্র্যাক করতে লগইন করুন'); openAuthModal(); return; }
+    togglePrayer(id, !isChecked);
+};
+
+window.togglePrayer = async function(prayerName, isChecked) {
+    if (!currentUser) return;
+    try {
+        const today = new Date().toISOString().split('T')[0];
+        if (isChecked) await supabaseClient.from('prayer_logs').insert({ user_id: currentUser.id, prayer_name: prayerName, date: today });
+        else await supabaseClient.from('prayer_logs').delete().eq('user_id', currentUser.id).eq('prayer_name', prayerName).eq('date', today);
+        initTracker();
+        showToast(isChecked ? 'নামাজ সম্পন্ন হয়েছে' : 'নামাজ বাতিল করা হয়েছে');
+    } catch (e) { showToast('ত্রুটি হয়েছে'); }
+};
+
+async function updateMonthlyStats() {
+    if (!currentUser) return;
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+    const daysPassed = now.getDate();
+    const { data: monthlyData } = await supabaseClient.from('prayer_logs').select('prayer_name').eq('user_id', currentUser.id).gte('date', startOfMonth);
+    if (!monthlyData) return;
+    const prayerCounts = { 'Fajr': 0, 'Dhuhr': 0, 'Asr': 0, 'Maghrib': 0, 'Isha': 0 };
+    monthlyData.forEach(log => { if (prayerCounts[log.prayer_name] !== undefined) prayerCounts[log.prayer_name]++; });
+    const totalExpected = daysPassed * 5, totalPerformed = monthlyData.length, totalMissed = totalExpected - totalPerformed;
+    let mostMissedName = '--', maxMissedCount = -1;
+    const bnNames = { 'Fajr': 'ফজর', 'Dhuhr': 'যোহর', 'Asr': 'আসর', 'Maghrib': 'মাগরিব', 'Isha': 'এশা' };
+    Object.keys(prayerCounts).forEach(key => {
+        const missed = daysPassed - prayerCounts[key];
+        if (missed > maxMissedCount) { maxMissedCount = missed; mostMissedName = bnNames[key]; }
+    });
+    safeSetText('total-missed-count', totalMissed > 0 ? totalMissed : 0);
+    safeSetText('most-missed-prayer', totalMissed > 0 ? mostMissedName : 'নেই');
+}
+
+function initQibla() {
+    const kaaba = { lat: 21.4225, lng: 39.8262 };
+    const qiblaDeg = calculateQibla(userLocation.lat, userLocation.lng, kaaba.lat, kaaba.lng);
+    safeSetText('qibla-degree', `${Math.round(qiblaDeg)}°`);
+    document.getElementById('qibla-pointer-group')?.setAttribute('transform', `rotate(${qiblaDeg}, 100, 100)`);
+    
+    if (window.DeviceOrientationEvent) {
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            document.getElementById('qibla-permission-btn')?.classList.remove('hidden');
+        } else {
+            startCompass(qiblaDeg);
+        }
+    }
+}
+
+window.requestQiblaPermission = async () => {
+    try {
+        const res = await DeviceOrientationEvent.requestPermission();
+        if (res === 'granted') {
+            document.getElementById('qibla-permission-btn')?.classList.add('hidden');
+            const kaaba = { lat: 21.4225, lng: 39.8262 };
+            const qiblaDeg = calculateQibla(userLocation.lat, userLocation.lng, kaaba.lat, kaaba.lng);
+            startCompass(qiblaDeg);
+        }
+    } catch (e) { showToast('পারমিশন পাওয়া যায়নি'); }
+};
+
+function startCompass(qiblaDeg) {
+    window.addEventListener('deviceorientationabsolute', (e) => {
+        const compass = e.alpha || e.webkitCompassHeading || 0;
+        const dial = document.getElementById('compass-dial');
+        if (dial) dial.style.transform = `rotate(${-compass}deg)`;
+        const currentHeading = (360 - compass) % 360;
+        const diff = Math.abs(currentHeading - qiblaDeg);
+        const status = document.getElementById('qibla-status');
+        if (status) {
+            if (diff < 5 || diff > 355) {
+                status.innerText = 'সঠিক দিক!'; status.classList.add('bg-emerald-500', 'text-white'); status.classList.remove('bg-slate-100', 'text-slate-500');
+            } else {
+                status.innerText = 'কিবলার দিকে ঘুরুন'; status.classList.remove('bg-emerald-500', 'text-white'); status.classList.add('bg-slate-100', 'text-slate-500');
+            }
+        }
+    }, true);
+}
+
+function calculateQibla(lat1, lon1, lat2, lon2) {
+    const φ1 = lat1 * Math.PI / 180, φ2 = lat2 * Math.PI / 180, Δλ = (lon2 - lon1) * Math.PI / 180;
+    const y = Math.sin(Δλ), x = Math.cos(φ1) * Math.tan(φ2) - Math.sin(φ1) * Math.cos(Δλ);
+    return (Math.atan2(y, x) * 180 / Math.PI + 360) % 360;
+}
+
+window.loadDonors = async function() {
+    const list = document.getElementById('donor-list');
+    const group = document.getElementById('blood-filter')?.value;
+    if (!list) return;
+    list.innerHTML = '<div class="flex justify-center py-10"><div class="animate-spin rounded-full h-6 w-6 border-b-2 border-red-500"></div></div>';
+    try {
+        let query = supabaseClient.from('blood_donors').select('*');
+        if (group) query = query.eq('blood_group', group);
+        const { data } = await query;
+        list.innerHTML = data?.length ? data.map(d => `
+            <div class="glass-card p-5 border-l-4 border-red-500 flex justify-between items-center">
+                <div><p class="font-bold text-slate-900 text-sm">${d.name} <span class="text-red-600">(${d.blood_group})</span></p><p class="text-[10px] text-slate-500"><i class="fas fa-map-marker-alt mr-1"></i> ${d.location}</p></div>
+                <a href="tel:${d.contact}" class="w-10 h-10 bg-red-50 text-red-600 rounded-xl flex items-center justify-center"><i class="fas fa-phone text-xs"></i></a>
+            </div>
+        `).join('') : '<p class="text-center py-10 text-slate-400 text-xs">কোনো দাতা পাওয়া যায়নি।</p>';
+    } catch (e) { list.innerHTML = '<p class="text-center py-10 text-slate-400 text-xs">ডেটা লোড করা সম্ভব হয়নি।</p>'; }
+};
+
+window.openDonorModal = () => document.getElementById('donor-modal')?.classList.add('active');
+window.closeDonorModal = () => document.getElementById('donor-modal')?.classList.remove('active');
+
+window.registerDonor = async function() {
+    const name = document.getElementById('donor-name')?.value, group = document.getElementById('donor-group')?.value, loc = document.getElementById('donor-location')?.value, contact = document.getElementById('donor-contact')?.value;
+    if (!name || !group || !loc || !contact) return showToast('সব তথ্য দিন');
+    try {
+        const { error } = await supabaseClient.from('blood_donors').insert([{ name, blood_group: group, location: loc, contact }]);
+        if (error) throw error;
+        showToast('নিবন্ধিত হয়েছেন');
+        closeDonorModal();
+        loadDonors();
+    } catch (e) { showToast(e.message); }
+};
+} catch(e) { console.error("Error in main.js:", e); }
+
+// --- FILE: app/main.js ---
+try {
+const SUPABASE_URL = 'https://cuxazxzpvrodsmxktkne.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN1eGF6eHpwdnJvZHNteGt0a25lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEyNTcxNzUsImV4cCI6MjA4NjgzMzE3NX0.8zGB_E_AAsU6wnBIBZnpQmDrmyKJXPLU11UChyZZKJ4';
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentUser = null;
+let userProfile = null;
+let authMode = 'login';
+let allSurahs = [];
+let userLocation = { lat: 23.8103, lng: 90.4125 };
+let ramadanTimings = { sehri: '', iftar: '' };
+let currentAudio = new Audio();
+let currentAyahList = [];
+let currentAyahIndex = -1;
+
+const safeSetText = (id, text) => { const el = document.getElementById(id); if (el) el.innerText = text; };
+const safeSetStyle = (id, prop, val) => { const el = document.getElementById(id); if (el) el.style[prop] = val; };
+
+function showToast(msg) {
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+    toast.innerText = msg;
+    toast.classList.add('active');
+    setTimeout(() => toast.classList.remove('active'), 3000);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    checkUser();
+    initLocation();
+    loadSurahs();
+    loadDailyReminder();
+    setInterval(updateMealCountdown, 1000);
+    initQibla();
+
+    currentAudio.ontimeupdate = () => {
+        if (currentAudio.duration) {
+            const progress = (currentAudio.currentTime / currentAudio.duration);
+            const circle = document.getElementById('audio-progress-circle');
+            if (circle) circle.style.strokeDashoffset = 157 - (progress * 157);
+        }
+    };
+    currentAudio.onended = () => playNextAyah();
+});
+
+async function checkUser() {
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    if (user) {
+        currentUser = user;
+        const { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
+        if (profile) {
+            userProfile = profile;
+            document.getElementById('login-btn')?.classList.add('hidden');
+            document.getElementById('user-info')?.classList.remove('hidden');
+            safeSetText('user-name', userProfile.full_name || user.email.split('@')[0]);
+            if (userProfile.is_admin) document.getElementById('admin-link')?.classList.remove('hidden');
+            initTracker();
+        }
+    } else {
+        document.getElementById('login-btn')?.classList.remove('hidden');
+        document.getElementById('user-info')?.classList.add('hidden');
+    }
+}
+
+async function loadDailyReminder() {
+    try {
+        const { data } = await supabaseClient.from('daily_reminders').select('*').eq('is_active', true).order('created_at', { ascending: false }).limit(1).single();
+        if (data) {
+            document.getElementById('daily-reminder-container')?.classList.remove('hidden');
+            safeSetText('reminder-text', data.content);
+        }
+    } catch (e) {}
+}
+
+window.handleLogout = async () => {
+    await supabaseClient.auth.signOut();
+    showToast('লগআউট সফল হয়েছে');
+    setTimeout(() => location.reload(), 1000);
+};
+
+window.toggleAuthMode = (mode) => {
+    authMode = mode;
+    const signupFields = document.getElementById('signup-fields');
+    const submitBtn = document.getElementById('auth-submit-btn');
+    const loginTab = document.getElementById('auth-tab-login');
+    const signupTab = document.getElementById('auth-tab-signup');
+    if (mode === 'signup') {
+        signupFields?.classList.remove('hidden');
+        if (submitBtn) submitBtn.innerText = 'রেজিস্ট্রেশন করুন';
+        if (signupTab) signupTab.className = 'text-sm font-bold text-emerald-800 border-b-2 border-emerald-800 pb-1';
+        if (loginTab) loginTab.className = 'text-sm font-bold text-slate-400 pb-1';
+    } else {
+        signupFields?.classList.add('hidden');
+        if (submitBtn) submitBtn.innerText = 'প্রবেশ করুন';
+        if (loginTab) loginTab.className = 'text-sm font-bold text-emerald-800 border-b-2 border-emerald-800 pb-1';
+        if (signupTab) signupTab.className = 'text-sm font-bold text-slate-400 pb-1';
+    }
+};
+
+window.openAuthModal = () => document.getElementById('auth-modal')?.classList.add('active');
+window.closeAuthModal = () => document.getElementById('auth-modal')?.classList.remove('active');
+
+window.handleAuth = async () => {
+    const email = document.getElementById('auth-email')?.value;
+    const password = document.getElementById('auth-password')?.value;
+    const name = document.getElementById('auth-name')?.value;
+    const btn = document.getElementById('auth-submit-btn');
+    if (!email || !password) return showToast('সব তথ্য দিন');
+    btn.disabled = true;
+    btn.innerText = 'অপেক্ষা করুন...';
+    try {
+        if (authMode === 'signup') {
+            if (!name) throw new Error('আপনার নাম দিন');
+            const { data, error } = await supabaseClient.auth.signUp({ email, password });
+            if (error) throw error;
+            if (data.user) {
+                await supabaseClient.from('profiles').update({ full_name: name }).eq('id', data.user.id);
+                showToast('রেজিস্ট্রেশন সফল!');
+                location.reload();
+            }
+        } else {
+            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            if (error) throw error;
+            showToast('লগইন সফল!');
+            location.reload();
+        }
+    } catch (e) {
+        showToast(e.message);
+        btn.disabled = false;
+        btn.innerText = authMode === 'signup' ? 'রেজিস্ট্রেশন করুন' : 'প্রবেশ করুন';
+    }
+};
+
+window.showSection = function(sectionId) {
+    document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
+    document.getElementById(`${sectionId}-section`)?.classList.remove('hidden');
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-active'));
+    document.getElementById(`nav-${sectionId}`)?.classList.add('nav-active');
+    if (sectionId === 'blood') loadDonors();
+    if (sectionId === 'tracker') initTracker();
+    document.querySelector('main').scrollTop = 0;
+};
+
+async function initLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+            userLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+            fetchPrayerTimes();
+            initQibla();
+        }, () => fetchPrayerTimes());
+    } else fetchPrayerTimes();
+}
+
+async function fetchPrayerTimes() {
+    try {
+        const date = new Date().toISOString().split('T')[0];
+        const res = await fetch(`https://api.aladhan.com/v1/timings/${date}?latitude=${userLocation.lat}&longitude=${userLocation.lng}&method=2`);
+        const data = await res.json();
+        const timings = data.data.timings;
+        ramadanTimings.sehri = timings.Imsak;
+        ramadanTimings.iftar = timings.Maghrib;
+        safeSetText('sehri-time', timings.Imsak);
+        safeSetText('iftar-time', timings.Maghrib);
+        safeSetText('ramadan-date', data.data.date.hijri.day + ' ' + data.data.date.hijri.month.en + ' ' + data.data.date.hijri.year);
+    } catch (e) { console.error(e); }
+}
+
+function updateMealCountdown() {
+    if (!ramadanTimings.sehri || !ramadanTimings.iftar) return;
+    const now = new Date();
+    const [sH, sM] = ramadanTimings.sehri.split(':');
+    const [iH, iM] = ramadanTimings.iftar.split(':');
+    const sehriTime = new Date(); sehriTime.setHours(sH, sM, 0);
+    const iftarTime = new Date(); iftarTime.setHours(iH, iM, 0);
+    let target, label, progress = 0;
+    if (now < sehriTime) { target = sehriTime; label = 'সেহরির বাকি'; }
+    else if (now < iftarTime) { target = iftarTime; label = 'ইফতারের বাকি'; progress = ((now - sehriTime) / (iftarTime - sehriTime)) * 100; }
+    else { target = new Date(sehriTime.getTime() + 24 * 60 * 60 * 1000); label = 'আগামী সেহরির বাকি'; }
+    const diff = target - now;
+    const hh = Math.floor(diff/3600000), mm = Math.floor((diff%3600000)/60000), ss = Math.floor((diff%60000)/1000);
+    safeSetText('next-meal-label', label);
+    safeSetText('meal-countdown', `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`);
+    safeSetStyle('fasting-progress', 'width', `${progress}%`);
+}
+
+async function loadSurahs() {
+    const list = document.getElementById('surah-list');
+    if (list) list.innerHTML = '<div class="flex justify-center py-20"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600"></div></div>';
+    try {
+        const res = await fetch('https://api.alquran.cloud/v1/surah');
+        const data = await res.json();
+        allSurahs = data.data;
+        renderSurahs(allSurahs);
+    } catch (e) { if (list) list.innerHTML = '<p class="text-center text-slate-400 py-10">কুরআন লোড করা সম্ভব হয়নি।</p>'; }
+}
+
+function renderSurahs(surahs) {
+    const list = document.getElementById('surah-list');
+    if (!list) return;
+    list.innerHTML = surahs.map(s => `
+        <div onclick="loadAyahs(${s.number}, '${s.englishName}')" class="glass-card surah-card p-4 flex justify-between items-center cursor-pointer gap-3">
+            <div class="flex items-center gap-4 min-w-0">
+                <div class="w-10 h-10 flex-shrink-0 premium-gradient text-white rounded-xl flex items-center justify-center font-bold text-sm shadow-md">${s.number}</div>
+                <div class="truncate"><p class="font-bold text-slate-900 text-sm truncate">${s.englishName}</p><p class="text-[10px] text-emerald-600 font-bold uppercase">${s.numberOfAyahs} Ayahs</p></div>
+            </div>
+            <p class="arabic-text text-xl text-emerald-800 flex-shrink-0 font-bold">${s.name}</p>
+        </div>
+    `).join('');
+}
+
+window.filterSurahs = function() {
+    const q = document.getElementById('quran-search')?.value.toLowerCase() || '';
+    const filtered = allSurahs.filter(s => s.englishName.toLowerCase().includes(q) || s.name.includes(q));
+    renderSurahs(filtered);
+};
+
+window.loadAyahs = async function(num, name) {
+    document.getElementById('surah-list')?.classList.add('hidden');
+    document.getElementById('quran-search-container')?.classList.add('hidden');
+    document.getElementById('ayah-view')?.classList.remove('hidden');
+    const container = document.getElementById('ayah-container');
+    if (container) container.innerHTML = '<div class="flex justify-center py-20"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600"></div></div>';
+    try {
+        const res = await fetch(`https://api.alquran.cloud/v1/surah/${num}/editions/quran-uthmani,bn.bengali`);
+        const data = await res.json();
+        const uthmani = data.data[0].ayahs, bengali = data.data[1].ayahs;
+        currentAyahList = uthmani.map((a, i) => ({ number: a.number, surahName: name, index: i }));
+        if (container) container.innerHTML = uthmani.map((a, i) => `
+            <div id="ayah-card-${i}" class="ayah-card glass-card p-5 space-y-4 transition-all duration-300">
+                <div class="flex justify-between items-center"><span class="text-[10px] font-bold bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md">${num}:${i+1}</span><button onclick="playAyah(${i})" class="w-8 h-8 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center shadow-sm active:scale-90"><i class="fas fa-play text-[10px]"></i></button></div>
+                <p class="arabic-text text-xl text-right leading-[2.1] text-slate-900 font-bold">${a.text}</p>
+                <div class="border-t border-slate-50 pt-3"><p class="text-[13px] text-slate-600 leading-relaxed font-medium">${bengali[i].text}</p></div>
+            </div>
+        `).join('');
+        document.querySelector('main').scrollTop = 0;
+    } catch (e) { showToast('আয়াত লোড করা সম্ভব হয়নি'); }
+};
+
+window.backToSurahList = function() {
+    document.getElementById('surah-list')?.classList.remove('hidden');
+    document.getElementById('quran-search-container')?.classList.remove('hidden');
+    document.getElementById('ayah-view')?.classList.add('hidden');
+    document.getElementById('global-audio-player')?.classList.add('hidden');
+    currentAudio.pause();
+};
+
+window.playAyah = function(index) {
+    currentAyahIndex = index;
+    const ayah = currentAyahList[index];
+    document.querySelectorAll('.ayah-card').forEach(c => c.classList.remove('active-ayah'));
+    const activeCard = document.getElementById(`ayah-card-${index}`);
+    if (activeCard) { activeCard.classList.add('active-ayah'); activeCard.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    currentAudio.src = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${ayah.number}.mp3`;
+    currentAudio.play();
+    document.getElementById('global-audio-player')?.classList.remove('hidden');
+    const playBtn = document.getElementById('main-play-pause');
+    if (playBtn) playBtn.className = 'fas fa-pause text-sm';
+};
+
+window.toggleAudio = function() {
+    const playBtn = document.getElementById('main-play-pause');
+    if (currentAudio.paused) { currentAudio.play(); if (playBtn) playBtn.className = 'fas fa-pause text-sm'; } 
+    else { currentAudio.pause(); if (playBtn) playBtn.className = 'fas fa-play text-sm'; }
+};
+
+function playNextAyah() {
+    if (currentAyahIndex + 1 < currentAyahList.length) playAyah(currentAyahIndex + 1);
+}
+
+async function initTracker() {
+    const tasks = [{ id: 'Fajr', name: 'ফজর' }, { id: 'Dhuhr', name: 'যোহর' }, { id: 'Asr', name: 'আসর' }, { id: 'Maghrib', name: 'মাগরিব' }, { id: 'Isha', name: 'এশা' }];
+    let completedPrayers = [];
+    if (currentUser) {
+        const today = new Date().toISOString().split('T')[0];
+        const { data } = await supabaseClient.from('prayer_logs').select('prayer_name').eq('user_id', currentUser.id).eq('date', today);
+        if (data) completedPrayers = data.map(d => d.prayer_name);
+        updateMonthlyStats();
+        document.getElementById('monthly-stats-card')?.classList.remove('hidden');
+    }
+    const list = document.getElementById('tracker-list');
+    if (list) {
+        list.innerHTML = tasks.map(t => `
+            <div class="glass-card p-5 flex justify-between items-center ${completedPrayers.includes(t.id) ? 'bg-emerald-50/50' : ''}" onclick="handleTrackerClick('${t.id}', ${completedPrayers.includes(t.id)})">
+                <span class="font-bold text-slate-900 text-sm">${t.name} নামাজ</span>
+                <div class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${completedPrayers.includes(t.id) ? 'bg-emerald-600 border-emerald-600' : 'border-slate-200'}">
+                    ${completedPrayers.includes(t.id) ? '<i class="fas fa-check text-white text-[10px]"></i>' : ''}
+                </div>
+            </div>
+        `).join('');
+    }
+}
+
+window.handleTrackerClick = function(id, isChecked) {
+    if (!currentUser) { showToast('নামাজ ট্র্যাক করতে লগইন করুন'); openAuthModal(); return; }
+    togglePrayer(id, !isChecked);
+};
+
+window.togglePrayer = async function(prayerName, isChecked) {
+    if (!currentUser) return;
+    try {
+        const today = new Date().toISOString().split('T')[0];
+        if (isChecked) await supabaseClient.from('prayer_logs').insert({ user_id: currentUser.id, prayer_name: prayerName, date: today });
+        else await supabaseClient.from('prayer_logs').delete().eq('user_id', currentUser.id).eq('prayer_name', prayerName).eq('date', today);
+        initTracker();
+        showToast(isChecked ? 'নামাজ সম্পন্ন হয়েছে' : 'নামাজ বাতিল করা হয়েছে');
+    } catch (e) { showToast('ত্রুটি হয়েছে'); }
+};
+
+async function updateMonthlyStats() {
+    if (!currentUser) return;
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+    const daysPassed = now.getDate();
+    const { data: monthlyData } = await supabaseClient.from('prayer_logs').select('prayer_name').eq('user_id', currentUser.id).gte('date', startOfMonth);
+    if (!monthlyData) return;
+    const prayerCounts = { 'Fajr': 0, 'Dhuhr': 0, 'Asr': 0, 'Maghrib': 0, 'Isha': 0 };
+    monthlyData.forEach(log => { if (prayerCounts[log.prayer_name] !== undefined) prayerCounts[log.prayer_name]++; });
+    const totalExpected = daysPassed * 5, totalPerformed = monthlyData.length, totalMissed = totalExpected - totalPerformed;
+    let mostMissedName = '--', maxMissedCount = -1;
+    const bnNames = { 'Fajr': 'ফজর', 'Dhuhr': 'যোহর', 'Asr': 'আসর', 'Maghrib': 'মাগরিব', 'Isha': 'এশা' };
+    Object.keys(prayerCounts).forEach(key => {
+        const missed = daysPassed - prayerCounts[key];
+        if (missed > maxMissedCount) { maxMissedCount = missed; mostMissedName = bnNames[key]; }
+    });
+    safeSetText('total-missed-count', totalMissed > 0 ? totalMissed : 0);
+    safeSetText('most-missed-prayer', totalMissed > 0 ? mostMissedName : 'নেই');
+}
+
+function initQibla() {
+    const kaaba = { lat: 21.4225, lng: 39.8262 };
+    const qiblaDeg = calculateQibla(userLocation.lat, userLocation.lng, kaaba.lat, kaaba.lng);
+    safeSetText('qibla-degree', `${Math.round(qiblaDeg)}°`);
+    document.getElementById('qibla-pointer-group')?.setAttribute('transform', `rotate(${qiblaDeg}, 100, 100)`);
+    if (window.DeviceOrientationEvent) {
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') document.getElementById('qibla-permission-btn')?.classList.remove('hidden');
+        else startCompass(qiblaDeg);
+    }
+}
+
+window.requestQiblaPermission = async () => {
+    try {
+        const res = await DeviceOrientationEvent.requestPermission();
+        if (res === 'granted') {
+            document.getElementById('qibla-permission-btn')?.classList.add('hidden');
+            const kaaba = { lat: 21.4225, lng: 39.8262 };
+            const qiblaDeg = calculateQibla(userLocation.lat, userLocation.lng, kaaba.lat, kaaba.lng);
+            startCompass(qiblaDeg);
+        }
+    } catch (e) { showToast('পারমিশন পাওয়া যায়নি'); }
+};
+
+function startCompass(qiblaDeg) {
+    window.addEventListener('deviceorientationabsolute', (e) => {
+        const compass = e.alpha || e.webkitCompassHeading || 0;
+        const dial = document.getElementById('compass-dial');
+        if (dial) dial.style.transform = `rotate(${-compass}deg)`;
+        const currentHeading = (360 - compass) % 360;
+        const diff = Math.abs(currentHeading - qiblaDeg);
+        const status = document.getElementById('qibla-status');
+        if (status) {
+            if (diff < 5 || diff > 355) {
+                status.innerText = 'সঠিক দিক!'; status.classList.add('bg-emerald-500', 'text-white'); status.classList.remove('bg-slate-100', 'text-slate-500');
+            } else {
+                status.innerText = 'কিবলার দিকে ঘুরুন'; status.classList.remove('bg-emerald-500', 'text-white'); status.classList.add('bg-slate-100', 'text-slate-500');
+            }
+        }
+    }, true);
+}
+
+function calculateQibla(lat1, lon1, lat2, lon2) {
+    const φ1 = lat1 * Math.PI / 180, φ2 = lat2 * Math.PI / 180, Δλ = (lon2 - lon1) * Math.PI / 180;
+    const y = Math.sin(Δλ), x = Math.cos(φ1) * Math.tan(φ2) - Math.sin(φ1) * Math.cos(Δλ);
+    return (Math.atan2(y, x) * 180 / Math.PI + 360) % 360;
+}
+
+window.loadDonors = async function() {
+    const list = document.getElementById('donor-list');
+    const group = document.getElementById('blood-filter')?.value;
+    if (!list) return;
+    list.innerHTML = '<div class="flex justify-center py-10"><div class="animate-spin rounded-full h-6 w-6 border-b-2 border-red-500"></div></div>';
+    try {
+        let query = supabaseClient.from('blood_donors').select('*');
+        if (group) query = query.eq('blood_group', group);
+        const { data } = await query;
+        list.innerHTML = data?.length ? data.map(d => `
+            <div class="glass-card p-5 border-l-4 border-red-500 flex justify-between items-center">
+                <div><p class="font-bold text-slate-900 text-sm">${d.name} <span class="text-red-600">(${d.blood_group})</span></p><p class="text-[10px] text-slate-500"><i class="fas fa-map-marker-alt mr-1"></i> ${d.location}</p></div>
+                <a href="tel:${d.contact}" class="w-10 h-10 bg-red-50 text-red-600 rounded-xl flex items-center justify-center"><i class="fas fa-phone text-xs"></i></a>
+            </div>
+        `).join('') : '<p class="text-center py-10 text-slate-400 text-xs">কোনো দাতা পাওয়া যায়নি।</p>';
+    } catch (e) { list.innerHTML = '<p class="text-center py-10 text-slate-400 text-xs">ডেটা লোড করা সম্ভব হয়নি।</p>'; }
+};
+
+window.openDonorModal = () => document.getElementById('donor-modal')?.classList.add('active');
+window.closeDonorModal = () => document.getElementById('donor-modal')?.classList.remove('active');
+
+window.registerDonor = async function() {
+    const name = document.getElementById('donor-name')?.value, group = document.getElementById('donor-group')?.value, loc = document.getElementById('donor-location')?.value, contact = document.getElementById('donor-contact')?.value;
+    if (!name || !group || !loc || !contact) return showToast('সব তথ্য দিন');
+    try {
+        const { error } = await supabaseClient.from('blood_donors').insert([{ name, blood_group: group, location: loc, contact }]);
+        if (error) throw error;
+        showToast('নিবন্ধিত হয়েছেন');
+        closeDonorModal();
+        loadDonors();
+    } catch (e) { showToast(e.message); }
+};
+} catch(e) { console.error("Error in app/main.js:", e); }
+
+</script></body>
+</html>
